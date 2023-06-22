@@ -1,3 +1,4 @@
+import { MatchResult } from 'ohm-js'
 import grammar, { QuakeGrammar, QuakeSemantics } from './Quake.ohm-bundle'
 import { operations } from './operations'
 
@@ -6,11 +7,26 @@ export interface Parser {
   semantics: QuakeSemantics
 }
 
-export function parse(str: string): string {
-  const parser = buildParser()
-  const match = parser.grammar.match(str)
+type Failures = {
+  [key: string]: string
+}
 
-  return parser.semantics(match).operations()
+interface FixForIncompleteMatchResult extends MatchResult {
+  getRightmostFailures(): Failures[]
+}
+
+export function parse(str: string): string | { error: string } {
+  const parser = buildParser()
+
+  const match = <FixForIncompleteMatchResult>parser.grammar.match(str)
+
+  if (match.failed()) {
+    return { error: <string>match.message }
+  } else {
+    const result = parser.semantics(match).operations()
+
+    return result
+  }
 }
 
 function buildParser(): Parser {

@@ -1,0 +1,29 @@
+{
+  "name": "quake-log-parser",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint . --ext cjs,ts --report-unused-disable-directives --max-warnings 0",
+    "typecheck": "tsc",
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.3.1",
+    "@typescript-eslint/eslint-plugin": "^5.59.11",
+    "@typescript-eslint/parser": "^5.59.11",
+    "eslint": "^8.43.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.8.8",
+    "typescript": "~5.0.4",
+    "vitest": "^0.32.2"
+  },
+  "dependencies": {
+    "tsx": "^3.12.7"
+  }
+}

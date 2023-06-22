@@ -6,6 +6,7 @@ import {
   GameToken,
   Games,
   GamesToken,
+  Kill,
 } from './tokens'
 
 export const tokenOperations: QuakeActionDict<
@@ -25,6 +26,9 @@ export const tokenOperations: QuakeActionDict<
   },
   ClientUserInfoChangedToken(_arg1, _arg2, id, _arg3, name, _arg4, _arg5) {
     return ClientUserinfoChanged(id.tokens(), name.tokens())
+  },
+  KillToken(_arg1, _arg2, assassin, victim, weapon, _arg5, _arg6) {
+    return Kill(assassin.tokens(), victim.tokens(), weapon.tokens())
   },
 }
 

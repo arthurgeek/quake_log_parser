@@ -1,10 +1,10 @@
 export type CommandToken = {
-  kind: 'ClientUserinfoChanged'
+  kind: 'ClientUserinfoChanged' | 'Kill'
   children: TerminalToken[]
 }
 
 export type TerminalToken = {
-  kind: 'UserID' | 'UserName'
+  kind: 'UserID' | 'UserName' | 'AssassinID' | 'VictimID' | 'WeaponID'
   content: string
 }
 
@@ -35,6 +35,21 @@ export function ClientUserinfoChanged(id: string, name: string): CommandToken {
     children: [
       { kind: 'UserID', content: id },
       { kind: 'UserName', content: name },
+    ],
+  }
+}
+
+export function Kill(
+  assassin: string,
+  victim: string,
+  weapon: string,
+): CommandToken {
+  return {
+    kind: 'Kill',
+    children: [
+      { kind: 'AssassinID', content: assassin },
+      { kind: 'VictimID', content: victim },
+      { kind: 'WeaponID', content: weapon },
     ],
   }
 }

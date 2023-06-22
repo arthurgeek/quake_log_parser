@@ -20,11 +20,12 @@ export interface QuakeActionDict<T> extends BaseActionDict<T> {
   ShutdownGameToken?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   ActionTokens?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   ClientUserInfoChangedToken?: (this: NonterminalNode, arg0: NonterminalNode, arg1: TerminalNode, arg2: NonterminalNode, arg3: TerminalNode, arg4: NonterminalNode, arg5: TerminalNode, arg6: NonterminalNode) => T;
+  KillToken?: (this: NonterminalNode, arg0: NonterminalNode, arg1: TerminalNode, arg2: NonterminalNode, arg3: NonterminalNode, arg4: NonterminalNode, arg5: TerminalNode, arg6: NonterminalNode) => T;
   CommandToken?: (this: NonterminalNode, arg0: NonterminalNode, arg1: Node, arg2: TerminalNode, arg3: NonterminalNode) => T;
   IgnoredCommandToken?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode, arg2: TerminalNode, arg3: NonterminalNode) => T;
   LinePrefix?: (this: NonterminalNode, arg0: IterationNode, arg1: TerminalNode, arg2: IterationNode) => T;
   separator?: (this: NonterminalNode, arg0: TerminalNode) => T;
-  userId?: (this: NonterminalNode, arg0: IterationNode) => T;
+  identifier?: (this: NonterminalNode, arg0: IterationNode) => T;
   userName?: (this: NonterminalNode, arg0: IterationNode) => T;
   commands?: (this: NonterminalNode, arg0: NonterminalNode | TerminalNode) => T;
   rest?: (this: NonterminalNode, arg0: IterationNode, arg1: NonterminalNode) => T;

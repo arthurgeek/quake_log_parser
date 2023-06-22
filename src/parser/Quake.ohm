@@ -12,9 +12,11 @@ Quake {
     ShutdownGameToken = CommandToken<"ShutdownGame">
 	
     ActionTokens = ClientUserInfoChangedToken
+    			  | KillToken
                   | IgnoredCommandToken
 	
-    ClientUserInfoChangedToken = LinePrefix "ClientUserinfoChanged:" userId "n\\" userName "\\t" rest
+    ClientUserInfoChangedToken = LinePrefix "ClientUserinfoChanged:" identifier "n\\" userName "\\t" rest
+    KillToken = LinePrefix "Kill:" identifier identifier identifier ":" rest
     
     CommandToken<command> = LinePrefix command ":" rest
     IgnoredCommandToken = LinePrefix (~commands letter)+ ":" rest
@@ -23,7 +25,7 @@ Quake {
     LinePrefix = digit+ ":" digit+
     separator = "------------------------------------------------------------"
     
-    userId = digit+
+    identifier = digit+
     userName = (~"\\t" any)+
 
     commands = separator

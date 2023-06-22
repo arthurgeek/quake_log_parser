@@ -118,13 +118,60 @@ describe('Parser', () => {
     })
   })
 
-  describe('parsing the example data', () => {
-    it('should return 21 games', async () => {
-      const data = await readFile('./data/quake.log', 'utf8')
-
-      const result = <GamesToken>parse(data)
-
-      expect(result.children).toHaveLength(21)
+  describe('parsing Kill', () => {
+    it.each([
+      {
+        input: dedent` 22:06 Kill: 2 3 7: Isgalamido killed Mocinha by MOD_ROCKET_SPLASH\n`,
+        expected: {
+          kind: 'Kill',
+          children: [
+            {
+              kind: 'AssassinID',
+              content: '2',
+            },
+            {
+              kind: 'VictimID',
+              content: '3',
+            },
+            {
+              kind: 'WeaponID',
+              content: '7',
+            },
+          ],
+        },
+      },
+      {
+        input: dedent` 20:54 Kill: 1022 2 22: <world> killed Isgalamido by MOD_TRIGGER_HURT\n`,
+        expected: {
+          kind: 'Kill',
+          children: [
+            {
+              kind: 'AssassinID',
+              content: '1022',
+            },
+            {
+              kind: 'VictimID',
+              content: '2',
+            },
+            {
+              kind: 'WeaponID',
+              content: '22',
+            },
+          ],
+        },
+      },
+    ])('works', ({ input, expected }) => {
+      expect(parse(input, true)).toStrictEqual(expected)
     })
+  })
+})
+
+describe('parsing the example data', () => {
+  it('should return 21 games', async () => {
+    const data = await readFile('./data/quake.log', 'utf8')
+
+    const result = <GamesToken>parse(data)
+
+    expect(result.children).toHaveLength(21)
   })
 })

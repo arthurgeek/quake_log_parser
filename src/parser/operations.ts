@@ -1,7 +1,41 @@
 import { QuakeActionDict } from './Quake.ohm-bundle'
+import {
+  ClientUserinfoChanged,
+  CommandToken,
+  Game,
+  GameToken,
+  Games,
+  GamesToken,
+} from './tokens'
 
-export const operations: QuakeActionDict<string> = {
+export const tokenOperations: QuakeActionDict<
+  string | CommandToken | undefined
+> = {
   _terminal() {
     return this.sourceString
+  },
+  _iter(...children) {
+    return children.map((c) => c.tokens()).join('')
+  },
+  rest(content, _) {
+    return content.children.map((c) => c.tokens()).join('')
+  },
+  IgnoredCommandToken(_arg1, _arg2, _arg3, _arg4) {
+    return undefined
+  },
+  ClientUserInfoChangedToken(_arg1, _arg2, id, _arg3, name, _arg4, _arg5) {
+    return ClientUserinfoChanged(id.tokens(), name.tokens())
+  },
+  userName(head, tail): string {
+    return [head.tokens(), tail.tokens()].join('')
+  },
+}
+
+export const gameOperations: QuakeActionDict<GamesToken | GameToken> = {
+  AllGames(head, tail) {
+    return Games([head.games(), tail.children.map((c) => c.games())].flat())
+  },
+  Game(_arg1, _arg2, other, _arg3, _arg4) {
+    return Game(other.children.map((c) => c.tokens()))
   },
 }

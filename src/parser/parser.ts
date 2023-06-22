@@ -1,6 +1,7 @@
 import { MatchResult } from 'ohm-js'
+import { gameOperations, tokenOperations } from './operations'
 import grammar, { QuakeGrammar, QuakeSemantics } from './Quake.ohm-bundle'
-import { operations } from './operations'
+import { CommandToken, GameToken, GamesToken } from './tokens'
 
 export interface Parser {
   grammar: QuakeGrammar
@@ -15,7 +16,7 @@ interface FixForIncompleteMatchResult extends MatchResult {
   getRightmostFailures(): Failures[]
 }
 
-export function parse(str: string): string | { error: string } {
+export function parse(str: string): GamesToken | { error: string } {
   const parser = buildParser()
 
   const match = <FixForIncompleteMatchResult>parser.grammar.match(str)
@@ -23,9 +24,9 @@ export function parse(str: string): string | { error: string } {
   if (match.failed()) {
     return { error: <string>match.message }
   } else {
-    const result = parser.semantics(match).operations()
+    const result = parser.semantics(match).games()
 
-    return result
+    return removeIgnoredTokens(result)
   }
 }
 
@@ -35,7 +36,22 @@ function buildParser(): Parser {
     semantics: grammar.createSemantics(),
   }
 
-  parser.semantics.addOperation('operations', operations)
+  parser.semantics.addOperation('tokens', tokenOperations)
+  parser.semantics.addOperation('games', gameOperations)
 
   return parser
+}
+
+function removeIgnoredTokens(allGames: GamesToken): GamesToken {
+  return {
+    ...allGames,
+    children: allGames.children.map((game: GameToken): GameToken => {
+      return {
+        ...game,
+        children: game.children.filter(
+          (token: CommandToken) => token != undefined,
+        ),
+      }
+    }),
+  }
 }

@@ -1,3 +1,36 @@
 Quake {
-    Digit = digit
+    // needed because space from built-in ohm rules consider \n as space
+    space := " " | "\t"
+
+    AllGames = Game (~end Game)*
+	
+    Game = SeparatorToken? InitGameToken ActionTokens* ShutdownGameToken? SeparatorToken
+    
+    SeparatorToken = LinePrefix separator eol?
+    
+    InitGameToken = CommandToken<"InitGame">
+    ShutdownGameToken = CommandToken<"ShutdownGame">
+	
+    ActionTokens = ClientUserInfoChangedToken
+                  | IgnoredCommandToken
+	
+    ClientUserInfoChangedToken = LinePrefix "ClientUserinfoChanged:" userId "n\\" userName "\\t" rest
+    
+    CommandToken<command> = LinePrefix command ":" rest
+    IgnoredCommandToken = LinePrefix (~commands letter)+ ":" rest
+
+    // utils
+    LinePrefix = digit+ ":" digit+
+    separator = "------------------------------------------------------------"
+    
+    userId = digit+
+    userName = letter (letter | space)+
+
+    commands = separator
+             | "InitGame"
+             | "ShutdownGame"
+             | "ClientUserinfoChanged"
+
+    rest = (~eol any)* eol
+    eol = "\n"
 }

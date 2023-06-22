@@ -88,5 +88,32 @@ describe('Parser', () => {
         ],
       })
     })
+
+    describe('parsing ClientUserinfoChanged', () => {
+      it.each([
+        {
+          input: dedent`20:37 ClientUserinfoChanged: 2 n\Chessus!\t\n`,
+          expected: 'Chessus!',
+        },
+        {
+          input: dedent`20:37 ClientUserinfoChanged: 2 n\M@ry!\t\n`,
+          expected: 'M@ry!',
+        },
+      ])('works for $expected', ({ input, expected }) => {
+        expect(parse(input, true)).toStrictEqual({
+          kind: 'ClientUserinfoChanged',
+          children: [
+            {
+              kind: 'UserID',
+              content: '2',
+            },
+            {
+              kind: 'UserName',
+              content: expected,
+            },
+          ],
+        })
+      })
+    })
   })
 })

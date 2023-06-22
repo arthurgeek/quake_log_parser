@@ -25,7 +25,7 @@ export interface QuakeActionDict<T> extends BaseActionDict<T> {
   LinePrefix?: (this: NonterminalNode, arg0: IterationNode, arg1: TerminalNode, arg2: IterationNode) => T;
   separator?: (this: NonterminalNode, arg0: TerminalNode) => T;
   userId?: (this: NonterminalNode, arg0: IterationNode) => T;
-  userName?: (this: NonterminalNode, arg0: NonterminalNode, arg1: IterationNode) => T;
+  userName?: (this: NonterminalNode, arg0: IterationNode) => T;
   commands?: (this: NonterminalNode, arg0: NonterminalNode | TerminalNode) => T;
   rest?: (this: NonterminalNode, arg0: IterationNode, arg1: NonterminalNode) => T;
   eol?: (this: NonterminalNode, arg0: TerminalNode) => T;

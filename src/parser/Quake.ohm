@@ -24,7 +24,7 @@ Quake {
     separator = "------------------------------------------------------------"
     
     userId = digit+
-    userName = letter (letter | space)+
+    userName = (~"\\t" any)+
 
     commands = separator
              | "InitGame"

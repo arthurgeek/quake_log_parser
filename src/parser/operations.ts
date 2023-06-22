@@ -26,9 +26,6 @@ export const tokenOperations: QuakeActionDict<
   ClientUserInfoChangedToken(_arg1, _arg2, id, _arg3, name, _arg4, _arg5) {
     return ClientUserinfoChanged(id.tokens(), name.tokens())
   },
-  userName(head, tail): string {
-    return [head.tokens(), tail.tokens()].join('')
-  },
 }
 
 export const gameOperations: QuakeActionDict<GamesToken | GameToken> = {

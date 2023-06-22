@@ -7,12 +7,14 @@
     "lint": "eslint . --ext cjs,ts --report-unused-disable-directives --max-warnings 0",
     "typecheck": "tsc",
     "test": "vitest",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "ohm-generate": "ohm generateBundles --withTypes 'src/parser/*.ohm'"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@ohm-js/cli": "^2.0.0",
     "@types/node": "^20.3.1",
     "@typescript-eslint/eslint-plugin": "^5.59.11",
     "@typescript-eslint/parser": "^5.59.11",
@@ -24,6 +26,7 @@
     "vitest": "^0.32.2"
   },
   "dependencies": {
+    "ohm-js": "^17.1.0",
     "tsx": "^3.12.7"
   }
 }

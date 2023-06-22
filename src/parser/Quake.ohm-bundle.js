@@ -1,0 +1,1 @@
+'use strict';const {makeRecipe}=require('ohm-js');const result=makeRecipe(["grammar",{"source":"Quake {\n    Digit = digit\n}"},"Quake",null,"Digit",{"Digit":["define",{"sourceInterval":[12,25]},null,[],["app",{"sourceInterval":[20,25]},"digit",[]]]}]);module.exports=result;

@@ -16,17 +16,25 @@ interface FixForIncompleteMatchResult extends MatchResult {
   getRightmostFailures(): Failures[]
 }
 
-export function parse(str: string): GamesToken | { error: string } {
+export function parse(
+  str: string,
+  token = false,
+): GamesToken | CommandToken | { error: string } {
   const parser = buildParser()
 
-  const match = <FixForIncompleteMatchResult>parser.grammar.match(str)
+  const semanticFunName = token ? 'tokens' : 'games'
+  const startRule = token ? 'ActionTokens' : undefined
+
+  const match = <FixForIncompleteMatchResult>(
+    parser.grammar.match(str, startRule)
+  )
 
   if (match.failed()) {
     return { error: <string>match.message }
   } else {
-    const result = parser.semantics(match).games()
+    const result = parser.semantics(match)[semanticFunName]()
 
-    return removeIgnoredTokens(result)
+    return token ? result : removeIgnoredTokens(result)
   }
 }
 

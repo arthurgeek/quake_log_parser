@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises'
 import { command } from 'cleye'
-import { parse } from '@/parser/parser'
+import { Parser } from '@/parser/parser'
 
 export const parseCommand = command(
   {
@@ -14,6 +14,6 @@ export const parseCommand = command(
     const file = argv._.file || './data/quake.log'
     const data = await readFile(file, 'utf8')
 
-    console.log(JSON.stringify(parse(data)))
+    console.log(JSON.stringify(new Parser(data).parse()))
   },
 )

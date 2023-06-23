@@ -1,5 +1,5 @@
 import dedent from 'dedent'
-import { parse } from '@/parser/parser'
+import { Parser } from '@/parser/parser'
 import { GamesToken } from '@/parser/tokens'
 import { readFile } from 'node:fs/promises'
 
@@ -55,13 +55,13 @@ describe('Parser', () => {
           ],
         }
 
-        expect(parse(str)).toStrictEqual(ast)
+        expect(new Parser(str).parse()).toStrictEqual(ast)
       })
     })
 
     describe('with parsing errors', () => {
       it('returns an error', () => {
-        expect(parse('a')).toStrictEqual({
+        expect(new Parser('a').parse()).toStrictEqual({
           error: dedent`Line 1, col 1:
           > 1 | a
                 ^
@@ -75,7 +75,7 @@ describe('Parser', () => {
     it('works', () => {
       const str = dedent`20:37 ClientUserinfoChanged: 2 n\Isgalamido\t\n`
 
-      expect(parse(str, true)).toStrictEqual({
+      expect(new Parser(str).parse(true)).toStrictEqual({
         kind: 'ClientUserinfoChanged',
         children: [
           {
@@ -101,7 +101,7 @@ describe('Parser', () => {
           expected: 'M@ry!',
         },
       ])('works for $expected', ({ input, expected }) => {
-        expect(parse(input, true)).toStrictEqual({
+        expect(new Parser(input).parse(true)).toStrictEqual({
           kind: 'ClientUserinfoChanged',
           children: [
             {
@@ -161,7 +161,7 @@ describe('Parser', () => {
         },
       },
     ])('works', ({ input, expected }) => {
-      expect(parse(input, true)).toStrictEqual(expected)
+      expect(new Parser(input).parse(true)).toStrictEqual(expected)
     })
   })
 })
@@ -170,7 +170,7 @@ describe('parsing the example data', () => {
   it('should return 21 games', async () => {
     const data = await readFile('./data/quake.log', 'utf8')
 
-    const result = <GamesToken>parse(data)
+    const result = <GamesToken>new Parser(data).parse()
 
     expect(result.children).toHaveLength(21)
   })

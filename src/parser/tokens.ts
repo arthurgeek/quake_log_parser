@@ -18,38 +18,40 @@ export interface GameToken {
   children: CommandToken[]
 }
 
-export function Games(children: GameToken[]): GamesToken {
-  return { kind: 'AllGames', children }
-}
-
-export function Game(children: CommandToken[]): GameToken {
-  return {
-    kind: 'Game',
-    children,
+export class Tokens {
+  static games = (children: GameToken[]): GamesToken => {
+    return { kind: 'AllGames', children }
   }
-}
 
-export function ClientUserinfoChanged(id: string, name: string): CommandToken {
-  return {
-    kind: 'ClientUserinfoChanged',
-    children: [
-      { kind: 'UserID', content: id },
-      { kind: 'UserName', content: name },
-    ],
+  static game = (children: CommandToken[]): GameToken => {
+    return {
+      kind: 'Game',
+      children,
+    }
   }
-}
 
-export function Kill(
-  assassin: string,
-  victim: string,
-  weapon: string,
-): CommandToken {
-  return {
-    kind: 'Kill',
-    children: [
-      { kind: 'AssassinID', content: assassin },
-      { kind: 'VictimID', content: victim },
-      { kind: 'WeaponID', content: weapon },
-    ],
+  static clientUserinfoChanged = (id: string, name: string): CommandToken => {
+    return {
+      kind: 'ClientUserinfoChanged',
+      children: [
+        { kind: 'UserID', content: id },
+        { kind: 'UserName', content: name },
+      ],
+    }
+  }
+
+  static kill = (
+    assassin: string,
+    victim: string,
+    weapon: string,
+  ): CommandToken => {
+    return {
+      kind: 'Kill',
+      children: [
+        { kind: 'AssassinID', content: assassin },
+        { kind: 'VictimID', content: victim },
+        { kind: 'WeaponID', content: weapon },
+      ],
+    }
   }
 }

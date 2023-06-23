@@ -9,6 +9,8 @@ enum ErrorMessages {
   UnknownVictim = 'Victim is Unknown',
 }
 
+export type GameJSON = Pick<Game, 'id' | 'players' | 'totalKills'>
+
 export class Game {
   #id: number
   #players: Player[] = []
@@ -63,6 +65,10 @@ export class Game {
         throw new Error(`Error: ${ErrorMessages.UnknownAssassin}`)
       }
     }
+  }
+
+  toJSON = (): GameJSON => {
+    return { id: this.id, players: this.#players, totalKills: this.#totalKills }
   }
 
   private addPlayer = (id: string, name: string) => {

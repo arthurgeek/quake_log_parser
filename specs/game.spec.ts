@@ -1,4 +1,4 @@
-import { Game, Player } from '@/game'
+import { Game, GameJSON, Player } from '@/game'
 
 interface LocalTestContext {
   game: Game
@@ -179,6 +179,28 @@ describe('Game', () => {
           ])
         })
       })
+    })
+  })
+
+  describe('toJSON', () => {
+    it('returns a GameJSON object with the important properties', () => {
+      const game = new Game(1)
+      game.addOrUpdatePlayer('1', 'First Player')
+      game.addOrUpdatePlayer('2', 'Second Player')
+      game.addKill('1022', '1')
+      game.addKill('1022', '2')
+      game.addKill('1', '2')
+      game.addKill('1', '2')
+      game.addKill('2', '1')
+
+      expect(game.toJSON()).toStrictEqual({
+        id: 1,
+        players: [
+          { id: '1', name: 'First Player', kills: 1 },
+          { id: '2', name: 'Second Player', kills: 0 },
+        ] satisfies Player[],
+        totalKills: 5,
+      } satisfies GameJSON)
     })
   })
 })

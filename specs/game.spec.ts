@@ -1,4 +1,4 @@
-import { Game, GameJSON, Player } from '@/game'
+import { Game, GameJSON, KillsByMeans, Player } from '@/game'
 
 interface LocalTestContext {
   game: Game
@@ -18,6 +18,10 @@ describe('Game', () => {
 
     it('initializes total kills to 0', () => {
       expect(game.totalKills).toEqual(0)
+    })
+
+    it('initializes kill by means to empty', () => {
+      expect(game.killsByMeans).toEqual({})
     })
   })
 
@@ -60,7 +64,7 @@ describe('Game', () => {
       })
 
       it<LocalTestContext>('keeps its kill count', ({ game }) => {
-        game.addKill('1', '1')
+        game.addKill('1', '1', '10')
 
         game.addOrUpdatePlayer('1', 'New Player Name')
 
@@ -80,7 +84,7 @@ describe('Game', () => {
       beforeEach<LocalTestContext>(async (context) => {
         context.game = new Game(1)
         context.game.addOrUpdatePlayer('1', 'Player Name')
-        context.game.addKill('1', '1')
+        context.game.addKill('1', '1', '10')
       })
 
       it<LocalTestContext>('increments the game totalKills', ({ game }) => {
@@ -98,11 +102,11 @@ describe('Game', () => {
       })
     })
 
-    describe(`when assassin is <world>`, () => {
+    describe('when assassin is <world>', () => {
       beforeEach<LocalTestContext>(async (context) => {
         context.game = new Game(1)
         context.game.addOrUpdatePlayer('1', 'Player Name')
-        context.game.addKill('1022', '1')
+        context.game.addKill('1022', '1', '10')
       })
 
       it<LocalTestContext>('increments the game totalKills', ({ game }) => {
@@ -120,7 +124,7 @@ describe('Game', () => {
       })
     })
 
-    describe(`when assassin does not exist`, () => {
+    describe('when assassin does not exist', () => {
       beforeEach<LocalTestContext>(async (context) => {
         context.game = new Game(1)
       })
@@ -129,8 +133,8 @@ describe('Game', () => {
         game,
       }) => {
         expect(() => {
-          game.addKill('1', '1')
-        }).toThrowError('Error: Assassin is Unknown')
+          game.addKill('1', '1', '10')
+        }).toThrowError('Error: Error parsing kill')
 
         expect(game.totalKills).toEqual(0)
       })
@@ -147,8 +151,8 @@ describe('Game', () => {
           game,
         }) => {
           expect(() => {
-            game.addKill('1', '2')
-          }).toThrowError('Error: Victim is Unknown')
+            game.addKill('1', '2', '10')
+          }).toThrowError('Error: Error parsing kill')
 
           expect(game.totalKills).toEqual(0)
           expect(game.players).toEqual([
@@ -166,8 +170,8 @@ describe('Game', () => {
           game,
         }) => {
           expect(() => {
-            game.addKill('1022', '2')
-          }).toThrowError('Error: Victim is Unknown')
+            game.addKill('1022', '2', '10')
+          }).toThrowError('Error: Error parsing kill')
 
           expect(game.totalKills).toEqual(0)
           expect(game.players).toEqual([
@@ -180,18 +184,38 @@ describe('Game', () => {
         })
       })
     })
+
+    describe('when weapon does not exist', () => {
+      it('throws an error and does not increment any kills', () => {
+        const game = new Game(1)
+        game.addOrUpdatePlayer('1', 'Player Name')
+
+        expect(() => {
+          game.addKill('1022', '1', '100')
+        }).toThrowError('Error: Error parsing kill')
+
+        expect(game.totalKills).toEqual(0)
+        expect(game.players).toEqual([
+          {
+            id: '1',
+            name: 'Player Name',
+            kills: 0,
+          } satisfies Player,
+        ])
+      })
+    })
   })
 
   describe('toJSON', () => {
-    it('returns a GameJSON object with the important properties', () => {
+    it('returns a GameJSON object with id, players, total kills and grouped kills by means', () => {
       const game = new Game(1)
       game.addOrUpdatePlayer('1', 'First Player')
       game.addOrUpdatePlayer('2', 'Second Player')
-      game.addKill('1022', '1')
-      game.addKill('1022', '2')
-      game.addKill('1', '2')
-      game.addKill('1', '2')
-      game.addKill('2', '1')
+      game.addKill('1022', '1', '19')
+      game.addKill('1022', '2', '22')
+      game.addKill('1', '2', '10')
+      game.addKill('1', '2', '7')
+      game.addKill('2', '1', '10')
 
       expect(game.toJSON()).toStrictEqual({
         id: 1,
@@ -200,6 +224,12 @@ describe('Game', () => {
           { id: '2', name: 'Second Player', kills: 0 },
         ] satisfies Player[],
         totalKills: 5,
+        killsByMeans: {
+          MOD_FALLING: 1,
+          MOD_TRIGGER_HURT: 1,
+          MOD_ROCKET_SPLASH: 1,
+          MOD_RAILGUN: 2,
+        } satisfies KillsByMeans,
       } satisfies GameJSON)
     })
   })

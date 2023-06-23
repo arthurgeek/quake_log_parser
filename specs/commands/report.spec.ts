@@ -26,7 +26,7 @@ describe('report command', () => {
     expect(vitest.mocked(console.log).mock.calls).toMatchInlineSnapshot(`
       [
         [
-          "[{\\"id\\":1,\\"players\\":[{\\"id\\":\\"2\\",\\"name\\":\\"Zeh\\",\\"kills\\":1},{\\"id\\":\\"3\\",\\"name\\":\\"Isgalamido\\",\\"kills\\":2},{\\"id\\":\\"4\\",\\"name\\":\\"Zeh\\",\\"kills\\":0},{\\"id\\":\\"5\\",\\"name\\":\\"Assasinu Credi\\",\\"kills\\":1}],\\"totalKills\\":14}]",
+          "[{\\"id\\":1,\\"players\\":[{\\"id\\":\\"2\\",\\"name\\":\\"Zeh\\",\\"kills\\":1},{\\"id\\":\\"3\\",\\"name\\":\\"Isgalamido\\",\\"kills\\":2},{\\"id\\":\\"4\\",\\"name\\":\\"Zeh\\",\\"kills\\":0},{\\"id\\":\\"5\\",\\"name\\":\\"Assasinu Credi\\",\\"kills\\":1}],\\"totalKills\\":14,\\"killsByMeans\\":{\\"MOD_ROCKET\\":4,\\"MOD_ROCKET_SPLASH\\":4,\\"MOD_TRIGGER_HURT\\":5,\\"MOD_RAILGUN\\":1}}]",
         ],
       ]
     `)

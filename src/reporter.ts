@@ -76,7 +76,13 @@ class GameReport {
         ) as TerminalToken
       ).content
 
-      this.game.addKill(assassinID, victimID)
+      const weaponID = (
+        killToken.children.find(
+          (command) => command.kind == 'WeaponID',
+        ) as TerminalToken
+      ).content
+
+      this.game.addKill(assassinID, victimID, weaponID)
     }
   }
 }

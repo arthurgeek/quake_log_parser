@@ -1,6 +1,6 @@
 import { Reporter } from '@/reporter'
 import { GamesToken } from '@/parser/tokens'
-import { GameJSON } from '@/game'
+import { GameJSON, KillsByMeans } from '@/game'
 
 describe('Reporter', () => {
   it('detects all players in the game', () => {
@@ -49,6 +49,7 @@ describe('Reporter', () => {
           { id: '1', name: 'First User', kills: 0 },
           { id: '2', name: 'Second User', kills: 0 },
         ],
+        killsByMeans: {},
       },
     ]
 
@@ -98,6 +99,7 @@ describe('Reporter', () => {
         id: 1,
         totalKills: 0,
         players: [{ id: '1', name: 'Malandrilson', kills: 0 }],
+        killsByMeans: {},
       },
     ]
 
@@ -167,7 +169,7 @@ describe('Reporter', () => {
                 },
                 {
                   kind: 'WeaponID',
-                  content: '8',
+                  content: '18',
                 },
               ],
             },
@@ -201,6 +203,11 @@ describe('Reporter', () => {
           { id: '1', name: 'First User', kills: 2 },
           { id: '2', name: 'Second User', kills: -1 },
         ],
+        killsByMeans: {
+          MOD_TRIGGER_HURT: 1,
+          MOD_TELEFRAG: 1,
+          MOD_RAILGUN: 1,
+        } satisfies KillsByMeans,
       },
     ]
 

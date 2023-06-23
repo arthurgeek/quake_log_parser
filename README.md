@@ -4,7 +4,7 @@ This project parses a [Quake log file](./data/quake.log) to gather some informat
 
 It uses [Ohm](https://ohmjs.org) as the library to build the parser.
 
-[You can check the grammar here](./src/parser/Quake.ohm).
+[You can check the grammar here](./src/parser/Quake.ohm) and [here you can see a syntax diagram of (also known as railroad diagram) the grammar](https://dundalek.com/grammkit/#https://raw.githubusercontent.com/arthurgeek/quake_log_parser/main/src/parser/Quake.ohm).
 
 ## Dependencies
 
@@ -351,9 +351,10 @@ Run `./src/cli.ts parse` to get a JSON representation of a log file AST.
 }
 ```
 
-And here's an image representation:
+Here's an image representation:
 
 <img src="./AST.svg">
+
 
 </p>
 
